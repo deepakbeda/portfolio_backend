@@ -17,7 +17,7 @@ Clone the repository.
 Install the dependencies and start the server.
 ```bash
   cd backend
-  npm install mongoose express dotenv body-parser jsonwebtoken expressvalidator.
+  npm install mongoose express dotenv body-parser jsonwebtoken express-validator.
 ```
 To start the server
 ```bash
