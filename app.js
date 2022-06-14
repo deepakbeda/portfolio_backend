@@ -3,15 +3,16 @@ routes = require("./Routes/index");
 const mongoose = require("mongoose");
 UserModel = require("./Models/userModel");
 bodyParser = require("body-parser");
+swaggerJsdoc = require("swagger-jsdoc"),
+swaggerUi = require("swagger-ui-express");
+cors = require("cors");
 //var mariadb = require('mariadb');
 require("dotenv").config();
 
 app = express();
-
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-
-
 
 poort = process.env.PORT || 6969;
 
@@ -60,6 +61,49 @@ app.use((error, req, res, next) => {
         error: errorData
     });
 });
+
+const options = {
+    definition: {
+      openapi: "3.0.0",
+      info: {
+        title: "LogRocket Express API with Swagger",
+        version: "0.1.0",
+        description:
+          "This is a simple CRUD API application made with Express and documented with Swagger",
+        license: {
+          name: "MIT",
+          url: "https://spdx.org/licenses/MIT.html",
+        },
+        contact: {
+          name: "LogRocket",
+          url: "https://logrocket.com",
+          email: "info@email.com",
+        },
+      },
+      components: {
+          securitySchemes: {
+              bearerAuth: {
+                  type: 'http',
+                  scheme: 'bearer',
+                  bearerFormat: 'JWT',
+              }
+          }
+      },
+      servers: [
+        {
+          url: "http://localhost:6969",
+        },
+      ],
+    },
+    apis: ["./Routes/index.js"],
+  };
+  
+  const specs = swaggerJsdoc(options);
+  app.use(
+    "/apiDocs",
+    swaggerUi.serve,
+    swaggerUi.setup(specs,{explorer : true})
+  );
 
 app.listen(poort, (req, res) => {
     console.log(`listening at ${poort}`);

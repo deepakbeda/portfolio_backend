@@ -8,5 +8,4 @@ exports.checkInputError = (req, res, next) => {
         errors.data = error.array();
         throw errors;
     }
-    next();
 };

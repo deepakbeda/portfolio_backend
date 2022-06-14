@@ -8,13 +8,13 @@ const thiss = new Services()
 
 const adminRegisterService = async(params) => {
     try{
-        const {name, email, password, contact} = params
+        const {Name, email, password, contact} = params
         const x = await AdminModel.findOne({email : email})
         if(x) throw thiss.fail({message : "user alredy exist", statusCode : 500});
         const salt = bcrypt.genSaltSync(10);
         const pwd = bcrypt.hashSync(password, salt);
         const tmpadmin = new AdminModel({
-            name,
+            Name,
             email,
             password : pwd,
             contact
@@ -49,8 +49,34 @@ const adminLoginService = async(params) => {
     }
 }
 
+const getAdminsService = async() => {
+    try{
+        const data = await AdminModel.find({}).select('email');
+        if(!data) throw thiss.fail({message : "no data available", statusCode : 400})
+        return thiss.success({statusCode : 201, data });
+    }
+    catch(err){
+        return err;
+    }
+}
+
+const deleteAdminService = async(params) => {
+    try{
+        const {email} = params;
+        const data = await AdminModel.findOne({email : email});
+        if(!data) throw thiss.fail({message : "email not found", statusCode : 400});
+        await AdminModel.deleteOne({email : email});
+        return thiss.success({statusCode : 201});
+    }
+    catch(err){
+        return err;
+    }
+}
+
 const hotelRegisterService = async(params) => {
     try{
+        const hotel = await HotelModel.findOne({Name : params.Name, location : params.location});
+        if(hotel) throw thiss.fail({message : "hotel alredy exist", statusCode : 500}) 
         const tmpadmin = new HotelModel({
             Name : params.Name,
             location : params.location,
@@ -80,9 +106,7 @@ const addRoomService = async(params) => {
         const x = hotel.room.find(e => e.roomNo == roomNo)
         if(x) throw thiss.fail({message : "room alredy exist", statusCode : 500})
         hotel.room.push(tmproom);
-        console.log(hotel);
         hotel.save();
-        console.log(hotel);
         return thiss.success({statusCode : 200});
     }
     catch(err){
@@ -93,6 +117,8 @@ const addRoomService = async(params) => {
 const updateHotelService = async(params) => {
     try{
         const {Name, location, Description, Stars} = params;
+        x = await HotelModel.findOne({Name : Name, location : location});
+        if(!x) throw thiss.fail({message : "Hotel not found", statusCode : 500})
         await HotelModel.updateMany({Name : Name, location : location}, {$set : {
             Name,
             location,
@@ -170,4 +196,4 @@ const deleteRoomService = async(params) => {
     }
 }
 
-module.exports = {adminRegisterService, adminLoginService, hotelRegisterService, addRoomService, updateHotelService, updateRoomService, deleteHotelService, deleteRoomService}
+module.exports = {adminRegisterService, adminLoginService, getAdminsService, hotelRegisterService, addRoomService, updateHotelService, updateRoomService, deleteHotelService, deleteRoomService, deleteAdminService}

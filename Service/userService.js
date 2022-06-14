@@ -50,6 +50,32 @@ const userLoginService = async(params) => {
     }
 }
 
+
+const getUsersService = async() => {
+    try{
+        const data = await UserModel.find({}).select('email');
+        if(!data) throw thiss.fail({message : "no data available", statusCode : 400})
+        return thiss.success({statusCode : 201, data });
+    }
+    catch(err){
+        return err;
+    }
+}
+
+const deleteUserService = async(params) => {
+    try{
+        const {email} = params;
+        const data = await UserModel.findOne({email : email});
+        if(!data) throw thiss.fail({message : "email not found", statusCode : 400});
+        await UserModel.deleteOne({email : email});
+        return thiss.success({statusCode : 201});
+    }
+    catch(err){
+        return err;
+    }
+}
+
+
 const getHotelService = async() => {
     try{
         const data = await HotelModel.find();
@@ -111,8 +137,8 @@ const bookHotelService = async(params) => {
 const bookingDetailsService = async(params) => {
     try{
         const data = await BookingModel.find({email : params.email});
-        if(!data) throw thiss.fail({message : "no booking", statusCode : 500})
-        return thiss.success({statusCode : 201, data });
+        if(!data || data.length == 0) throw thiss.fail({message : "no booking", statusCode : 500});
+        return thiss.success({statusCode : 201, data : data});
     }
     catch(err){
         return err;
@@ -150,4 +176,4 @@ const cancelBookingService = async(params) => {
     }
 }
 
-module.exports = {userRegisterService, userLoginService, getHotelService, getHotelByNameService, bookHotelService, bookingDetailsService, getRoomsService, cancelBookingService}
+module.exports = {userRegisterService, userLoginService, getUsersService, getHotelService, getHotelByNameService, bookHotelService, bookingDetailsService, getRoomsService, cancelBookingService, deleteUserService}

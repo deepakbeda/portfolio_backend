@@ -1,4 +1,4 @@
-const { userRegisterService, userLoginService, getHotelService, getHotelByNameService, bookHotelService, bookingDetailsService, getRoomsService, cancelBookingService} = require(".././Service/userService")
+const { userRegisterService, userLoginService, getUsersService, deleteUserService, getHotelService, getHotelByNameService, bookHotelService, bookingDetailsService, getRoomsService, cancelBookingService} = require(".././Service/userService")
 const { checkInputError } = require('../Utils/validate')
 
 const userRegisterController = async(req, res, next) => {
@@ -8,6 +8,7 @@ const userRegisterController = async(req, res, next) => {
         res.json(response).status(201);
     }
     catch(err){
+        console.log(err);
         next(err);
     }
 }
@@ -22,6 +23,28 @@ const userLoginController = async(req, res, next) => {
         next(err);
     }
 }
+
+const getUsersController = async(req, res, next) => {
+    try{
+        const response = await getUsersService();
+        res.json(response).status(201);
+    }
+    catch(err){
+        next(err);
+    }
+}
+
+const deleteUserController = async(req, res, next) => {
+    try{
+        checkInputError(req);
+        const response = await deleteUserService(req.body);
+        res.json(response).status(201);
+    }
+    catch(err){
+        next(err);
+    }
+}
+
 
 const getHotelController = async(req, res, next) => {
     try{
@@ -82,4 +105,4 @@ const cancelBookingController = async(req, res, next) => {
     }
 }
 
-module.exports = {userRegisterController, userLoginController, getHotelController, getHotelByNameController, bookHotelController, bookingDetailsController, getRoomsController, cancelBookingController}
+module.exports = {userRegisterController, userLoginController, getHotelController, getHotelByNameController, bookHotelController, bookingDetailsController, getRoomsController, cancelBookingController, getUsersController, deleteUserController}
