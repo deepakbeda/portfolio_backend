@@ -91,7 +91,7 @@ const options = {
       },
       servers: [
         {
-          url: "http://localhost:6969",
+          url: "http://yoyoyoyoy.herokuapp.com",
         },
       ],
     },
