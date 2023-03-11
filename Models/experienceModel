@@ -1,0 +1,26 @@
+mongoose = require("mongoose");
+
+const experience = new mongoose.Schema({
+  email: {
+    type: "String",
+  },
+  title: {
+    type: "String",
+  },
+  company_name: {
+    type: "String",
+  },
+  icon: {
+    type: "String",
+  },
+  date: {
+    type: "String",
+  },
+  points: {
+    type: "String",
+  },
+});
+
+experiences = mongoose.model("experiences", experience);
+
+module.exports = experiences;

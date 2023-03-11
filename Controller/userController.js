@@ -1,108 +1,123 @@
-const { userRegisterService, userLoginService, getUsersService, deleteUserService, getHotelService, getHotelByNameService, bookHotelService, bookingDetailsService, getRoomsService, cancelBookingService} = require(".././Service/userService")
-const { checkInputError } = require('../Utils/validate')
+const {
+  userRegisterService,
+  userLoginService,
+  getUsersService,
+  deleteUserService,
+  userProfileService,
+  getUserProfileService,
+  updateUserProfileService,
+  experienceService,
+  getExperienceService,
+  updateExperienceService,
+} = require(".././Service/userService");
+const { checkInputError } = require("../Utils/validate");
 
-const userRegisterController = async(req, res, next) => {
-    try{
-        checkInputError(req);
-        const response = await userRegisterService(req.body);
-        res.json(response).status(201);
-    }
-    catch(err){
-        console.log(err);
-        next(err);
-    }
-}
+const userRegisterController = async (req, res, next) => {
+  try {
+    checkInputError(req);
+    const response = await userRegisterService(req.body);
+    res.json(response).status(201);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
 
-const userLoginController = async(req, res, next) => {
-    try{
-        checkInputError(req);
-        const response = await userLoginService(req.body);
-        res.json(response).status(201);
-    }
-    catch(err){
-        next(err);
-    }
-}
+const userLoginController = async (req, res, next) => {
+  try {
+    checkInputError(req);
+    const response = await userLoginService(req.body);
+    res.json(response).status(201);
+  } catch (err) {
+    next(err);
+  }
+};
 
-const getUsersController = async(req, res, next) => {
-    try{
-        const response = await getUsersService();
-        res.json(response).status(201);
-    }
-    catch(err){
-        next(err);
-    }
-}
+const getUsersController = async (req, res, next) => {
+  try {
+    const response = await getUsersService();
+    res.json(response).status(201);
+  } catch (err) {
+    next(err);
+  }
+};
 
-const deleteUserController = async(req, res, next) => {
-    try{
-        checkInputError(req);
-        const response = await deleteUserService(req.body);
-        res.json(response).status(201);
-    }
-    catch(err){
-        next(err);
-    }
-}
+const deleteUserController = async (req, res, next) => {
+  try {
+    checkInputError(req);
+    const response = await deleteUserService(req.body);
+    res.json(response).status(201);
+  } catch (err) {
+    next(err);
+  }
+};
 
+const userProfileController = async (req, res, next) => {
+  try {
+    checkInputError(req);
+    const response = await userProfileService(req.body);
+    res.json(response).status(201);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
 
-const getHotelController = async(req, res, next) => {
-    try{
-        const response = await getHotelService();
-        res.json(response).status(201);
-    }
-    catch(err){
-        next(err);
-    }
-}
+const getUserProfileController = async (req, res, next) => {
+  try {
+    const response = await getUserProfileService();
+    res.json(response).status(201);
+  } catch (err) {
+    next(err);
+  }
+};
+const updateUserProfileController = async (req, res, next) => {
+  try {
+    const response = await updateUserProfileService(req.body);
+    res.json(response).status(201);
+  } catch (err) {
+    next(err);
+  }
+};
+//
+const experienceController = async (req, res, next) => {
+  try {
+    checkInputError(req);
+    const response = await experienceService(req.body);
+    res.json(response).status(201);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+//
+const getExperienceController = async (req, res, next) => {
+  try {
+    const response = await getExperienceService();
+    res.json(response).status(201);
+  } catch (err) {
+    next(err);
+  }
+};
 
-const getHotelByNameController = async(req, res, next) => {
-    try{
-        const response = await getHotelByNameService(req.query);
-        res.json(response).status(201);
-    }
-    catch(err){
-        next(err);
-    }
-}
-const bookHotelController = async(req, res, next) => {
-    try{
-        const response = await bookHotelService(req.body);
-        res.json(response).status(201);
-    }
-    catch(err){
-        next(err);
-    }
-}
-
-const bookingDetailsController = async(req, res, next) => {
-    try{
-        const response = await bookingDetailsService(req.query);
-        res.json(response).status(201);
-    }
-    catch(err){
-        next(err);
-    }
-}
-
-const getRoomsController = async(req, res, next) => {
-    try{
-        const response = await getRoomsService(req.query);
-        res.json(response).status(201);
-    }
-    catch(err){
-        next(err);
-    }
-}
-
-const cancelBookingController = async(req, res, next) => {
-    try{
-        const response = await cancelBookingService(req.body);
-        res.json(response).status(201);
-    }
-    catch(err){
-        next(err);
-    }
-}
-
-module.exports = {userRegisterController, userLoginController, getHotelController, getHotelByNameController, bookHotelController, bookingDetailsController, getRoomsController, cancelBookingController, getUsersController, deleteUserController}
+//
+const updateExperienceController = async (req, res, next) => {
+  try {
+    const response = await updateExperienceService(req.body);
+    res.json(response).status(201);
+  } catch (err) {
+    next(err);
+  }
+};
+module.exports = {
+  userRegisterController,
+  userLoginController,
+  getUsersController,
+  deleteUserController,
+  userProfileController,
+  getUserProfileController,
+  updateUserProfileController,
+  experienceController,
+  getExperienceController,
+  updateExperienceController,
+};
