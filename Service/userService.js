@@ -8,6 +8,8 @@ const argon = require("argon2");
 const psSupported = require("jsonwebtoken/lib/psSupported");
 const userProfile = require("../Models/userProfileModel");
 const experience = require("../Models/experienceModel");
+const project = require("../Models/projectModel");
+
 const userRegisterService = async (params) => {
   try {
     const { name, email, password, contact } = params;
@@ -100,9 +102,10 @@ const userProfileService = async (params) => {
     return err;
   }
 };
-const getUserProfileService = async () => {
+const getUserProfileService = async (email) => {
   try {
-    const data = await userProfile.find().select("-_id");
+    const data = await userProfile.findOne({ email: email }).select("-_id");
+    //console.log(data);
     if (!data)
       throw thiss.fail({ message: "no data available", statusCode: 400 });
     return thiss.success({ statusCode: 201, data });
@@ -131,8 +134,6 @@ const updateUserProfileService = async (params) => {
     return err;
   }
 };
-
-//
 
 const experienceService = async (params) => {
   try {
@@ -187,6 +188,58 @@ const updateExperienceService = async (params) => {
   }
 };
 
+const projectService = async (params) => {
+  try {
+    const { email, name, description, tags, image, source_code_link } = params;
+    const x = await UserModel.findOne({ email: email });
+    if (!x) throw thiss.fail({ message: "Email not exist", statusCode: 500 });
+
+    const tmpexperience = new project({
+      email,
+      name,
+      description,
+      tags,
+      image,
+      source_code_link,
+    });
+    tmpexperience.save();
+    return thiss.success({ statusCode: 201 });
+  } catch (err) {
+    return err;
+  }
+};
+
+const getProjectService = async () => {
+  try {
+    const data = await project.find().select();
+    if (!data)
+      throw thiss.fail({ message: "no data available", statusCode: 400 });
+    return thiss.success({ statusCode: 201, data });
+  } catch (err) {
+    return err;
+  }
+};
+//
+
+const updateProjectService = async (params) => {
+  try {
+    const filter = { email: params.email };
+    const data = await project.findOne(filter);
+    if (!data)
+      throw thiss.fail({ message: "no data available", statusCode: 400 });
+
+    const filterByIDAndEmail = { _id: params._id, email: params.email };
+    const updateProject = await project.findOneAndUpdate(
+      filterByIDAndEmail,
+      params
+    );
+    return thiss.success({ statusCode: 201, updateProject });
+  } catch (err) {
+    console.log("= catchparams=>", err);
+    return err;
+  }
+};
+
 module.exports = {
   userRegisterService,
   userLoginService,
@@ -198,4 +251,7 @@ module.exports = {
   experienceService,
   getExperienceService,
   updateExperienceService,
+  projectService,
+  getProjectService,
+  updateProjectService,
 };

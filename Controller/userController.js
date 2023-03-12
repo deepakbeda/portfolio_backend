@@ -9,6 +9,9 @@ const {
   experienceService,
   getExperienceService,
   updateExperienceService,
+  projectService,
+  getProjectService,
+  updateProjectService,
 } = require(".././Service/userService");
 const { checkInputError } = require("../Utils/validate");
 
@@ -65,7 +68,8 @@ const userProfileController = async (req, res, next) => {
 
 const getUserProfileController = async (req, res, next) => {
   try {
-    const response = await getUserProfileService();
+    const email = req.query.email;
+    const response = await getUserProfileService(email);
     res.json(response).status(201);
   } catch (err) {
     next(err);
@@ -109,6 +113,37 @@ const updateExperienceController = async (req, res, next) => {
     next(err);
   }
 };
+
+//
+const projectController = async (req, res, next) => {
+  try {
+    checkInputError(req);
+    const response = await projectService(req.body);
+    res.json(response).status(201);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+//
+const getProjectController = async (req, res, next) => {
+  try {
+    const response = await getProjectService();
+    res.json(response).status(201);
+  } catch (err) {
+    next(err);
+  }
+};
+
+//
+const updateProjectController = async (req, res, next) => {
+  try {
+    const response = await updateProjectService(req.body);
+    res.json(response).status(201);
+  } catch (err) {
+    next(err);
+  }
+};
 module.exports = {
   userRegisterController,
   userLoginController,
@@ -120,4 +155,7 @@ module.exports = {
   experienceController,
   getExperienceController,
   updateExperienceController,
+  projectController,
+  getProjectController,
+  updateProjectController,
 };

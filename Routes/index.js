@@ -9,6 +9,9 @@ const {
   experienceController,
   getExperienceController,
   updateExperienceController,
+  projectController,
+  getProjectController,
+  updateProjectController,
 } = require("../Controller/userController");
 //const { adminRegisterController , adminLoginController, getAdminsController, deleteAdminController, hotelRegisterController, addRoomController, updateHotelController, updateRoomController, deleteHotelController, deleteRoomController} = require("../Controller/adminController");
 const { userRegister, userLogin, userProfile } = require("../Validation/user");
@@ -31,4 +34,10 @@ router.patch("/updateUserProfile", updateUserProfileController);
 router.post("/experience", experienceController);
 router.get("/getExperience", getExperienceController);
 router.patch("/updateExperience", updateExperienceController);
+
+//project
+router.post("/project", projectController);
+router.get("/getProject", getProjectController);
+router.patch("/updateProject", updateProjectController);
+
 module.exports = router;
